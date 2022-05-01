@@ -1,0 +1,24 @@
+# Default values for grace.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rabbitmq:
+    image:
+        tag: 3.8.18-debian-10-r0
+    persistence:
+        enabled: false
+    tls:
+        enabled: false
+    auth:
+        username: rabbitmq
+        password: rabbitmq
+
+humio-helm-charts:
+    humio-fluentbit:
+        enabled: true
+        humioHostname: cloud.community.humio.com
+        token: your-humio-ingest-token
+        es:
+            tls: true
+
+namespace: grace

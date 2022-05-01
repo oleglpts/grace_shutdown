@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-parms
+  namespace: {{ .Values.namespace }}
+data:
+  WRITE_TO_FILE: "0"
+  WORKERS_COUNT: "1"
+  SLEEP_INTERVAL: "20"

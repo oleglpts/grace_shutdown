@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grace-sender
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: grace-sender
+      labels:
+        app: grace-sender
+        humio-parser: clearway
+    spec:
+      containers:
+      - image: grace_sender:latest
+        imagePullPolicy: IfNotPresent
+        name: grace-sender
+        env:
+          - name: WRITE_TO_FILE
+            valueFrom:
+              configMapKeyRef:
+                name: config-parms
+                key: WRITE_TO_FILE
+          - name: SLEEP_INTERVAL
+            valueFrom:
+              configMapKeyRef:
+                name: config-parms
+                key: SLEEP_INTERVAL
+          - name: RABBITMQ_SERVICE_HOST
+            value: $(GRACE_RABBITMQ_SERVICE_HOST)
+          - name: RABBITMQ_SERVICE_PORT
+            value: $(GRACE_RABBITMQ_SERVICE_PORT)
+          - name: RABBITMQ_USERNAME
+            value: rabbitmq
+          - name: RABBITMQ_PASSWORD
+            valueFrom:
+                secretKeyRef:
+                    name: grace-rabbitmq
+                    key: rabbitmq-password
+  selector:
+    matchLabels:
+      app: grace-sender

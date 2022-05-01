@@ -1,0 +1,9 @@
+#!/bin/bash
+
+eval $(minikube docker-env -p GraceShutdown)
+cp -r ../helpers ../receiver/helpers
+cp -r ../helpers ../sender/helpers
+docker build -t grace_sender:latest -f ../sender/Dockerfile ../sender
+docker build -t grace_receiver:latest -f ../receiver/Dockerfile ../receiver
+rm -rf ../sender/helpers
+rm -rf ../receiver/helpers

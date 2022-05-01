@@ -1,0 +1,41 @@
+version: "2"
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq-grace
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+
+  sender:
+    image: "grace_sender:latest"
+    container_name: grace_sender
+    environment:
+      - RABBITMQ_SERVICE_HOST=rabbitmq
+      - RABBITMQ_SERVICE_PORT=5672
+      - RABBITMQ_USERNAME=rabbitmq
+      - RABBITMQ_PASSWORD=rabbitmq
+    links:
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+
+  receiver:
+    image: "grace_receiver:latest"
+    container_name: grace_receiver
+    environment:
+      - RABBITMQ_SERVICE_HOST=rabbitmq
+      - RABBITMQ_SERVICE_PORT=5672
+      - RABBITMQ_USERNAME=rabbitmq
+      - RABBITMQ_PASSWORD=rabbitmq
+    links:
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+      - sender
+
