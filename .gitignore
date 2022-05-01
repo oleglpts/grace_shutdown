@@ -1,1 +1,4 @@
 .idea/
+/helm/grace/Chart.lock
+/helm/grace/charts/humio-helm-charts-0.8.29.tgz
+/helm/grace/charts/rabbitmq-8.32.2.tgz
